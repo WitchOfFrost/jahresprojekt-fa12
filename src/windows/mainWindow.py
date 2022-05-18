@@ -1,7 +1,7 @@
 import tkinter as tk
-from copy import deepcopy
 
 from windows.aboutWindow import aboutWindow
+from windows.manualWindow import manualWindow
 from windows.gameWindow import gameWindow
 
 
@@ -10,14 +10,20 @@ class mainWindow(tk.Tk):
         super().__init__()
         self.geometry("400x600")
         self.title("Strategie Prototyp")
-        self.windows = {"about": {"count":0, "instances": {}}}
+        self.windows = {"about": {"count": 0, "instances": {}}}
+        self.iconbitmap(default='src/windows/assets/icon.ico')
 
         self.initElements()
 
-
     def initElements(self):
+        tk.Button(self, text="Bauernschach",
+                  command=lambda: self.openSelectGame("BS")).pack()
+        tk.Button(self, text="Dame",
+                  command=lambda: self.openSelectGame("DM")).pack()
+        tk.Button(self, text="Tic-Tac-Toe",
+                  command=lambda: self.openSelectGame("TTT")).pack()
+        tk.Button(self, text="Rules", command=lambda: self.openManual()).pack()
         tk.Button(self, text="About", command=lambda: self.openAbout()).pack()
-        tk.Button(self, text="Game", command=lambda: self.openGame()).pack()
         self.bind('<Control-q>', lambda void: self.killShortcut())
 
     def killShortcut(self):
@@ -26,11 +32,11 @@ class mainWindow(tk.Tk):
     def launch(self):
         self.mainloop()
 
-    def openGame(self):
-        gameWindow(self)
+    def openSelectGame(self, mode):
+        gameWindow(self, mode)
+
+    def openManual(self):
+        manualWindow(self)
 
     def openAbout(self):
-        
-        self.windows["about"]["instances"][self.windows["about"]["count"]] = aboutWindow(self)
-        self.windows["about"]["count"]+1
-            
+        aboutWindow(self)
