@@ -1,7 +1,7 @@
 from windows.mainWindow import mainWindow
-from windows.versionWindow import versionWindow
+from windows.gameWindow import gameWindow
 
 mW = mainWindow()
-vW = versionWindow(mW)
+# gw = gameWindow(mW)
 
 mW.launch()
