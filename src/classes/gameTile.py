@@ -1,5 +1,7 @@
 from projectConfig import *
 
+# TODO: Tiling improvements?
+
 class gameTile():
     def __init__(self, id, total, size):
         self.state = 0  # 0 = Empty, 1 = Player, 2 = AI
