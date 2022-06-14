@@ -1,5 +1,6 @@
-import spiele.gameflow
+import os
+import database.dbCreation as dbCreation
 
-temp = spiele.gameflow.Spielesammlung("Bauernschach", 1)
+os.chdir("./src")
 
-print(temp.gameloop())
+dbCreation.createDB(False)

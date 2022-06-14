@@ -2,6 +2,7 @@ from array import array
 import algo.ki as ki
 from spiele.playGrid import grid, gamemode, playPiece
 from enum import Enum
+from database.insertLeaderboard import insertLeaderboard
 # from algo import ki
 
 import copy
@@ -17,14 +18,14 @@ class gamestate(Enum):
     Player2Win = 4
     
 grid_size = 100
-spr_emptyGrid = pygame.transform.scale(pygame.image.load("src/assets/sprites/empty.png"), (grid_size, grid_size))
-spr_emptyMove = pygame.transform.scale(pygame.image.load("src/assets/sprites/emptyMove.png"), (grid_size, grid_size))
-spr_grid1 = pygame.transform.scale(pygame.image.load("src/assets/sprites/grid1.png"), (grid_size, grid_size))
-spr_grid1Capture = pygame.transform.scale(pygame.image.load("src/assets/sprites/grid1Capture.png"), (grid_size, grid_size))
-spr_grid1Selected = pygame.transform.scale(pygame.image.load("src/assets/sprites/grid1Selected.png"), (grid_size, grid_size))
-spr_grid2 = pygame.transform.scale(pygame.image.load("src/assets/sprites/grid2.png"), (grid_size, grid_size))
-spr_grid2Capture = pygame.transform.scale(pygame.image.load("src/assets/sprites/grid2Capture.png"), (grid_size, grid_size))
-spr_grid2Selected = pygame.transform.scale(pygame.image.load("src/assets/sprites/grid2Selected.png"), (grid_size, grid_size))
+spr_emptyGrid = pygame.transform.scale(pygame.image.load("assets/sprites/empty.png"), (grid_size, grid_size))
+spr_emptyMove = pygame.transform.scale(pygame.image.load("assets/sprites/emptyMove.png"), (grid_size, grid_size))
+spr_grid1 = pygame.transform.scale(pygame.image.load("assets/sprites/grid1.png"), (grid_size, grid_size))
+spr_grid1Capture = pygame.transform.scale(pygame.image.load("assets/sprites/grid1Capture.png"), (grid_size, grid_size))
+spr_grid1Selected = pygame.transform.scale(pygame.image.load("assets/sprites/grid1Selected.png"), (grid_size, grid_size))
+spr_grid2 = pygame.transform.scale(pygame.image.load("assets/sprites/grid2.png"), (grid_size, grid_size))
+spr_grid2Capture = pygame.transform.scale(pygame.image.load("assets/sprites/grid2Capture.png"), (grid_size, grid_size))
+spr_grid2Selected = pygame.transform.scale(pygame.image.load("assets/sprites/grid2Selected.png"), (grid_size, grid_size))
     
 class Spielesammlung:
     
@@ -47,9 +48,12 @@ class Spielesammlung:
     currentSelectedCell = [-1,-1]
     allMovesOfPiece = []
     
+    username: str
     
-    def __init__(self, mode, difficulty):
+    
+    def __init__(self, mode, difficulty, username):
         self.difficulty = difficulty
+        self.username = username
         if mode == "Bauernschach":
             self.gm = gamemode.Bauernschach
         elif mode == "Dame":
@@ -147,14 +151,14 @@ class Spielesammlung:
                                 self.gameGrid.setAllRect(self.border, self.top_border, grid_size)
                                 if gameWon == 0 or gameWon == 2:
                                     currentGamestate = gamestate.Player1Win
-                                    self.wins += 1
+                                    insertLeaderboard(self.username, 1, self.difficulty)
                                 elif gameWon == 1:
                                     currentGamestate = gamestate.Player2Win
                                 else:
                                     gameWon = self.performKIMove()
                                     if gameWon == 0:
                                         currentGamestate = gamestate.Player1Win
-                                        self.wins += 1
+                                        insertLeaderboard(self.username, 1, self.difficulty)
                                     elif gameWon == 1 or gameWon == 2:
                                         currentGamestate = gamestate.Player2Win
                                     self.gameGrid.setAllRect(self.border, self.top_border, grid_size)
@@ -223,7 +227,7 @@ class Spielesammlung:
                                 gameWon = self.gameGrid.moveCellByCoord(temp[0], temp[1], currCellCoord[0], currCellCoord[1])
                                 if gameWon == 0:
                                     currentGamestate = gamestate.Player1Win
-                                    self.wins += 1
+                                    insertLeaderboard(self.username, 1, self.difficulty)
                                 elif gameWon == 1:
                                     currentGamestate = gamestate.Player2Win
                                 else:
@@ -231,7 +235,7 @@ class Spielesammlung:
                                     gameWon = self.performKIMove()
                                     if gameWon == 0:
                                         currentGamestate = gamestate.Player1Win
-                                        self.wins += 1
+                                        insertLeaderboard(self.username, 1, self.difficulty)
                                     elif gameWon == 1:
                                         currentGamestate = gamestate.Player2Win
                                     self.gameGrid.setAllRect(self.border, self.top_border, grid_size)
@@ -288,16 +292,16 @@ class Spielesammlung:
                             if currCell.getColor() == -1:
                                 gameWon = self.gameGrid.placeTicTacToePiece(currCellCoord[0], currCellCoord[1], 0)
                                 self.gameGrid.setAllRect(self.border, self.top_border, grid_size)
-                                if gameWon == 0:
+                                if gameWon == 0 or gameWon == 2:
                                     currentGamestate = gamestate.Player1Win
-                                    self.wins += 1
+                                    insertLeaderboard(self.username, 1, self.difficulty)
                                 elif gameWon == 1:
                                     currentGamestate = gamestate.Player2Win
                                 else:
                                     gameWon = self.performKIMove()
-                                    if gameWon == 0:
+                                    if gameWon == 0 or gameWon == 2:
                                         currentGamestate = gamestate.Player1Win
-                                        self.wins += 1
+                                        insertLeaderboard(self.username, 1, self.difficulty)
                                     elif gameWon == 1:
                                         currentGamestate = gamestate.Player2Win
                                     self.gameGrid.setAllRect(self.border, self.top_border, grid_size)
@@ -353,7 +357,7 @@ class Spielesammlung:
         else:
             return self.gameGrid.moveCellByCoord(kIMove[0], kIMove[1], kIMove[2], kIMove[3])
     
-    def gameloop(self) -> int:
+    def gameloop(self):
         
         if self.gm == gamemode.Bauernschach:
             self.mainLoopBauernschach()
@@ -363,6 +367,4 @@ class Spielesammlung:
             self.mainLoopTicTacToe()
             
         pygame.quit()
-
-        return self.wins #test
 
