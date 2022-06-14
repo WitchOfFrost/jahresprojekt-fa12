@@ -363,4 +363,4 @@ class Spielesammlung:
             self.mainLoopTicTacToe()
             
         pygame.quit()
-        return self.wins
+        return self.wins #test
