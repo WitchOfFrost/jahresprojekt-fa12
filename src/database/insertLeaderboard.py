@@ -11,9 +11,11 @@ def insertLeaderboard(username, result, difficulty):
 
     if data is None:
         print("No user logged in")
+        return False
     else:
         cur.execute("""INSERT INTO GAMES (user_id, result, difficulty) VALUES (?,?,?)""",
                     (data[0], result, difficulty,))
 
         conn.commit()
         print("Done")
+        return True

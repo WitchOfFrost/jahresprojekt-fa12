@@ -1,17 +1,12 @@
 import sqlite3
 
-def createDB(debug):
-	if(debug == True):
-		path = input("Input Database Path")
-	else:
-		path = 'src/data/db.sqlite'
-
-	conn = sqlite3.connect(path)
+def createDB():
+	conn = sqlite3.connect('src/data/db.sqlite')
 
 	conn.execute("""CREATE TABLE IF NOT EXISTS "ACCOUNTS" (
 		"username"	TEXT NOT NULL UNIQUE,
 		"password"	TEXT NOT NULL,
-		"email"	TEXT NOT NULL UNIQUE
+		"email"	TEXT UNIQUE
     	)""")
 
 	conn.execute("""CREATE TABLE IF NOT EXISTS "GAMES" (

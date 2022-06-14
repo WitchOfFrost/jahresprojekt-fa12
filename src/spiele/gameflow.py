@@ -1,4 +1,5 @@
 from array import array
+from time import sleep
 import algo.ki as ki
 from spiele.playGrid import grid, gamemode, playPiece
 from enum import Enum
@@ -60,6 +61,8 @@ class Spielesammlung:
             self.gm = gamemode.Dame
         elif mode == "TicTacToe":
             self.gm = gamemode.Tictactoe
+        else:
+            print(username)
         self.gameGrid = grid(self.game_height, self.game_width, self.gm)
         
     def drawText(self,txt, s, yOff=0):
@@ -135,40 +138,41 @@ class Spielesammlung:
                 else:
                     if currentGamestate == gamestate.Player1Turn and event.type == pygame.MOUSEBUTTONUP and event.button == 1:# Linksklick
                         currCell = self.getClickedPlayPiece(event)
-                        currCellCoord = currCell.getCoord()
-                        if isinstance(currCell,playPiece):
-                            if self.currentSelectedCell == [-1,-1]:
-                                    print(currCell.getColor())
-                                    if currCell.getColor() == 0:
-                                        self.currentSelectedCell = currCellCoord
-                                        self.allMovesOfPiece = self.gameGrid.getMovesOfPiece(self.currentSelectedCell[0], self.currentSelectedCell[1])
-                                    print(self.currentSelectedCell)
-                            elif self.clickedPieceinMoveArray(currCellCoord):
-                                temp = self.currentSelectedCell
-                                self.currentSelectedCell = [-1, -1]
-                                self.allMovesOfPiece = []
-                                gameWon = self.gameGrid.moveCellByCoord(temp[0], temp[1], currCellCoord[0], currCellCoord[1])
-                                self.gameGrid.setAllRect(self.border, self.top_border, grid_size)
-                                if gameWon == 0 or gameWon == 2:
-                                    currentGamestate = gamestate.Player1Win
-                                    insertLeaderboard(self.username, 1, self.difficulty)
-                                elif gameWon == 1:
-                                    currentGamestate = gamestate.Player2Win
-                                else:
-                                    gameWon = self.performKIMove()
+                        if currCell is not None:
+                            currCellCoord = currCell.getCoord()
+                            if isinstance(currCell,playPiece):
+                                if self.currentSelectedCell == [-1,-1]:
+                                        print(currCell.getColor())
+                                        if currCell.getColor() == 0:
+                                            self.currentSelectedCell = currCellCoord
+                                            self.allMovesOfPiece = self.gameGrid.getMovesOfPiece(self.currentSelectedCell[0], self.currentSelectedCell[1])
+                                        print(self.currentSelectedCell)
+                                elif self.clickedPieceinMoveArray(currCellCoord):
+                                    temp = self.currentSelectedCell
+                                    self.currentSelectedCell = [-1, -1]
+                                    self.allMovesOfPiece = []
+                                    gameWon = self.gameGrid.moveCellByCoord(temp[0], temp[1], currCellCoord[0], currCellCoord[1])
+                                    self.gameGrid.setAllRect(self.border, self.top_border, grid_size)
                                     if gameWon == 0 or gameWon == 2:
                                         currentGamestate = gamestate.Player1Win
                                         insertLeaderboard(self.username, 1, self.difficulty)
                                     elif gameWon == 1:
                                         currentGamestate = gamestate.Player2Win
-                                    self.gameGrid.setAllRect(self.border, self.top_border, grid_size)
-                                
-                            elif currCell.getColor() == 0:
-                                self.currentSelectedCell = currCellCoord
-                                self.allMovesOfPiece = self.gameGrid.getMovesOfPiece(self.currentSelectedCell[0], self.currentSelectedCell[1])
-                            else:
-                                self.currentSelectedCell = [-1, -1]
-                                self.allMovesOfPiece = []
+                                    else:
+                                        gameWon = self.performKIMove()
+                                        if gameWon == 0 or gameWon == 2:
+                                            currentGamestate = gamestate.Player1Win
+                                            insertLeaderboard(self.username, 1, self.difficulty)
+                                        elif gameWon == 1:
+                                            currentGamestate = gamestate.Player2Win
+                                        self.gameGrid.setAllRect(self.border, self.top_border, grid_size)
+                                    
+                                elif currCell.getColor() == 0:
+                                    self.currentSelectedCell = currCellCoord
+                                    self.allMovesOfPiece = self.gameGrid.getMovesOfPiece(self.currentSelectedCell[0], self.currentSelectedCell[1])
+                                else:
+                                    self.currentSelectedCell = [-1, -1]
+                                    self.allMovesOfPiece = []
                     elif currentGamestate == gamestate.Player1Win or currentGamestate == gamestate.Player2Win:
                         if event.type == pygame.KEYDOWN:
                             if event.key == pygame.K_r:
@@ -212,39 +216,40 @@ class Spielesammlung:
                 else:
                     if currentGamestate == gamestate.Player1Turn and event.type == pygame.MOUSEBUTTONUP and event.button == 1:# Linksklick
                         currCell = self.getClickedPlayPiece(event)
-                        currCellCoord = currCell.getCoord()
-                        if isinstance(currCell,playPiece):
-                            if self.currentSelectedCell == [-1,-1]:
-                                    print(currCell.getColor())
-                                    if currCell.getColor() != -1:
-                                        self.currentSelectedCell = currCellCoord
-                                        self.allMovesOfPiece = self.gameGrid.getMovesOfPiece(self.currentSelectedCell[0], self.currentSelectedCell[1])
-                                    print(self.currentSelectedCell)
-                            elif self.clickedPieceinMoveArray(currCellCoord):
-                                temp = self.currentSelectedCell
-                                self.currentSelectedCell = [-1, -1]
-                                self.allMovesOfPiece = []
-                                gameWon = self.gameGrid.moveCellByCoord(temp[0], temp[1], currCellCoord[0], currCellCoord[1])
-                                if gameWon == 0 or gameWon == 2:
-                                    currentGamestate = gamestate.Player1Win
-                                    insertLeaderboard(self.username, 1, self.difficulty)
-                                elif gameWon == 1:
-                                    currentGamestate = gamestate.Player2Win
-                                else:
-                                    self.gameGrid.setAllRect(self.border, self.top_border, grid_size)
-                                    gameWon = self.performKIMove()
+                        if currCell is not None:
+                            currCellCoord = currCell.getCoord()
+                            if isinstance(currCell,playPiece):
+                                if self.currentSelectedCell == [-1,-1]:
+                                        print(currCell.getColor())
+                                        if currCell.getColor() != -1:
+                                            self.currentSelectedCell = currCellCoord
+                                            self.allMovesOfPiece = self.gameGrid.getMovesOfPiece(self.currentSelectedCell[0], self.currentSelectedCell[1])
+                                        print(self.currentSelectedCell)
+                                elif self.clickedPieceinMoveArray(currCellCoord):
+                                    temp = self.currentSelectedCell
+                                    self.currentSelectedCell = [-1, -1]
+                                    self.allMovesOfPiece = []
+                                    gameWon = self.gameGrid.moveCellByCoord(temp[0], temp[1], currCellCoord[0], currCellCoord[1])
                                     if gameWon == 0 or gameWon == 2:
                                         currentGamestate = gamestate.Player1Win
                                         insertLeaderboard(self.username, 1, self.difficulty)
                                     elif gameWon == 1:
                                         currentGamestate = gamestate.Player2Win
-                                    self.gameGrid.setAllRect(self.border, self.top_border, grid_size)
-                            elif currCell.getColor()  != -1:
-                                self.currentSelectedCell = currCellCoord
-                                self.allMovesOfPiece = self.gameGrid.getMovesOfPiece(self.currentSelectedCell[0], self.currentSelectedCell[1])
-                            else:
-                                self.currentSelectedCell = [-1, -1]
-                                self.allMovesOfPiece = []
+                                    else:
+                                        self.gameGrid.setAllRect(self.border, self.top_border, grid_size)
+                                        gameWon = self.performKIMove()
+                                        if gameWon == 0:
+                                            currentGamestate = gamestate.Player1Win
+                                            insertLeaderboard(self.username, 1, self.difficulty)
+                                        elif gameWon == 1 or gameWon == 2:
+                                            currentGamestate = gamestate.Player2Win
+                                        self.gameGrid.setAllRect(self.border, self.top_border, grid_size)
+                                elif currCell.getColor()  != -1:
+                                    self.currentSelectedCell = currCellCoord
+                                    self.allMovesOfPiece = self.gameGrid.getMovesOfPiece(self.currentSelectedCell[0], self.currentSelectedCell[1])
+                                else:
+                                    self.currentSelectedCell = [-1, -1]
+                                    self.allMovesOfPiece = []
                     elif currentGamestate == gamestate.Player1Win or currentGamestate == gamestate.Player2Win:
                         if event.type == pygame.KEYDOWN:
                             if event.key == pygame.K_r:
@@ -287,24 +292,25 @@ class Spielesammlung:
                 else:
                     if currentGamestate == gamestate.Player1Turn and event.type == pygame.MOUSEBUTTONUP and event.button == 1:# Linksklick
                         currCell = self.getClickedPlayPiece(event)
-                        currCellCoord = currCell.getCoord()
-                        if isinstance(currCell,playPiece):
-                            if currCell.getColor() == -1:
-                                gameWon = self.gameGrid.placeTicTacToePiece(currCellCoord[0], currCellCoord[1], 0)
-                                self.gameGrid.setAllRect(self.border, self.top_border, grid_size)
-                                if gameWon == 0 or gameWon == 2:
-                                    currentGamestate = gamestate.Player1Win
-                                    insertLeaderboard(self.username, 1, self.difficulty)
-                                elif gameWon == 1:
-                                    currentGamestate = gamestate.Player2Win
-                                else:
-                                    gameWon = self.performKIMove()
+                        if currCell is not None:
+                            currCellCoord = currCell.getCoord()
+                            if isinstance(currCell,playPiece):
+                                if currCell.getColor() == -1:
+                                    gameWon = self.gameGrid.placeTicTacToePiece(currCellCoord[0], currCellCoord[1], 0)
+                                    self.gameGrid.setAllRect(self.border, self.top_border, grid_size)
                                     if gameWon == 0 or gameWon == 2:
                                         currentGamestate = gamestate.Player1Win
                                         insertLeaderboard(self.username, 1, self.difficulty)
                                     elif gameWon == 1:
                                         currentGamestate = gamestate.Player2Win
-                                    self.gameGrid.setAllRect(self.border, self.top_border, grid_size)
+                                    else:
+                                        gameWon = self.performKIMove()
+                                        if gameWon == 0 or gameWon == 2:
+                                            currentGamestate = gamestate.Player1Win
+                                            insertLeaderboard(self.username, 1, self.difficulty)
+                                        elif gameWon == 1:
+                                            currentGamestate = gamestate.Player2Win
+                                        self.gameGrid.setAllRect(self.border, self.top_border, grid_size)
                     elif currentGamestate == gamestate.Player1Win or currentGamestate == gamestate.Player2Win:
                         if event.type == pygame.KEYDOWN:
                             if event.key == pygame.K_r:
@@ -342,7 +348,7 @@ class Spielesammlung:
                 temp.placeTicTacToePiece(child[0], child[1], 1)
             else:
                 temp.moveCellByCoord(child[0], child[1], child[2], child[3])
-            currEval = ki.alpha_beta(temp, 4, -(math.inf), math.inf, False)
+            currEval = ki.alpha_beta(temp, self.difficulty + 1, -(math.inf), math.inf, False)
             if currEval > maxEval:
                 maxEval = currEval
                 bestMove = child
@@ -358,13 +364,11 @@ class Spielesammlung:
             return self.gameGrid.moveCellByCoord(kIMove[0], kIMove[1], kIMove[2], kIMove[3])
     
     def gameloop(self):
-        
+        sleep(1)
         if self.gm == gamemode.Bauernschach:
             self.mainLoopBauernschach()
         elif self.gm == gamemode.Dame:
             self.mainLoopDame()
         elif self.gm == gamemode.Tictactoe:
             self.mainLoopTicTacToe()
-            
-        pygame.quit()
 

@@ -2,21 +2,11 @@ import hashlib
 import bcrypt
 import base64
 import sqlite3
-import re
 
 from getpass import getpass
 
 conn = sqlite3.connect('src/data/db.sqlite')
 
-def selectDatabase(debug):
-    # UNUSED
-    if(debug == True):
-        conn = sqlite3.connect(input("Input Database Path"))
-    else:
-        conn = sqlite3.connect('data/db.sqlite')
-
-
-cur = ''
 cur = conn.cursor()
 
 
@@ -33,8 +23,10 @@ def validityCheck(username, password):
     
     if bcrypt.checkpw(password.encode(), data[1]):
         print("Failed")
+        return False
     else:
         print("Valid")
+        return True
 
 def hashing(password):
     sha256 = hashlib.sha256(password.encode())

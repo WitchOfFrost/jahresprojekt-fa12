@@ -15,6 +15,7 @@ def alpha_beta(grid:grid, depth, alpha, beta, max_player):
     if depth == 0 or grid.getWinner() != -1:
         #return current game status
         if max_player:
+            print(grid.evaluateBoard(1))
             return grid.evaluateBoard(1) #match ist durch
         else:
             return grid.evaluateBoard(0)

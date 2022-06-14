@@ -2,15 +2,12 @@ import hashlib
 import bcrypt
 import base64
 import sqlite3
-import re
 
 from getpass import getpass
 
 conn = sqlite3.connect('src/data/db.sqlite')
 
-cur = ''
 cur = conn.cursor()
-
 
 def getInput():
     username = str(input("Enter a Username > "))
@@ -31,18 +28,19 @@ def validityCheck(username, password):
 
             if pwd == False:
                     print("Failed to hash password, please try again!")
-                    getInput()
-                    return
+                    return False
 
             else:
-                insertUser(username, pwd)
+                if insertUser(username, pwd):
+                    return True
+
         else:
             print(
                     "Username and Password have to be between 6 and 16 Characters!")
-            getInput()
-            return
+            return False
     else:
         print('Found username %s in Database at row %s' % (username, data[0]))
+        return False
 
 
 def insertUser(username, password):
@@ -50,6 +48,7 @@ def insertUser(username, password):
                 (username, password))
     conn.commit()
     print("Added User to Database")
+    return True
 
 
 def hashing(password):
@@ -64,6 +63,3 @@ def hashing(password):
     else:
         print("Invalid Password")
         return False
-
-
-getInput()

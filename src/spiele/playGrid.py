@@ -143,6 +143,13 @@ class grid:
                 temp.setCoord(xendpos, yendpos)
                 self.setCellByCoord(xpos, ypos, playPiece(xpos, ypos))
                 # self.printGridAsString()
+                if self._gamemode == gamemode.Dame:
+                    abc = abs(xpos-xendpos)
+                    if abs(xpos-xendpos) == 2 and abs(ypos-yendpos) == 2:
+                       x = min(xpos, xendpos) + 1
+                       y = min(ypos, yendpos) + 1
+                       self.setCellByCoord(x, y, playPiece(x, y))
+                        
                 return self.isGameWon()
         return -1
     
@@ -196,16 +203,16 @@ class grid:
                     if temp.getColor() == 0:
                         return 0
             
-            length = len(self._grid) - 1
-            for i in range(length-self._width,length):
+            length = len(self._grid)
+            for i in range(length-self._width-1,length):
                 temp = self._grid[i]
                 if isinstance(temp, playPiece):
                     if temp.getColor() == 1:
                         return 1
             
-            allMoves = self.getAllMoves(0) + self.getAllMoves(1)
-            print(allMoves)
-            if len(allMoves) == 0:
+            if len(self.getAllMoves(0)) == 0:
+                return 2
+            elif len(self.getAllMoves(1)) == 0:
                 return 2
                     
         return -1
@@ -283,8 +290,8 @@ class grid:
     def evaluateBoard(self, color): # Spieler 1 auf 0 Spieler 0 auf 5
         currScore = 0
         currWinner = self.getWinner()
-        pointsForPlayerPiece = 1
-        pointsForEnemyPiece = 1
+        pointsForPlayerPiece = 3
+        pointsForEnemyPiece = 2
         if currWinner == color:
             return math.inf
         elif currWinner != -1 and currWinner != 2:
@@ -342,7 +349,6 @@ class playPieceDame(playPiece):
         super().__init__(self, xpos, ypos, color)
         
     def moves(self, grid: grid, possibleCaptures: bool): # überschreibt die vererbte moves-Funktion
-        print(possibleCaptures)
         movelist = []
         offset = [[-1,-1],[-1,1],[1,-1],[1,1]]
         for i in offset:

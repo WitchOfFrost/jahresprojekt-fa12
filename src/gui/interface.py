@@ -1,32 +1,38 @@
 import pygame, sys, re
 import spiele.gameflow as gameflow
+import database.userAccountCreation as userAccountCreation
+import database.userAccountCheck as userAccountCheck
+import database.getLeaderboard as getLeaderboard
+
+
 
 #SETUP
-Path = "src/assets/gui/"
+Path = "assets/gui/"
+Path2 = "src/assets/gui/"
 MusicVolume = 0.5
 SoundVolume = 0.8
 LoggedInUsername = ''
 LoggedIn = False
 
 #ASSETS
-FontPath = Path +"font.ttf"
+FontPath = Path2 +"font.ttf"
 Music = Path + "BackgroundMusic.mp3"
 ButtonClickPath = Path + "ButtonClick.mp3"
-PygameIcon = pygame.image.load(Path+"Icon.png")
-BackgroundMenu = pygame.image.load(Path + "BackgroundMenu.png")
-BackgroundLogin = pygame.image.load(Path + "BackgroundLogin.png")
-BackgroundSignIn = pygame.image.load(Path + "BackgroundSignIn.png")
-BackgroundLeaderboard = pygame.image.load(Path + "BackgroundLeaderboard.png")
-BackgroundPlay = pygame.image.load(Path + "BackgroundPlay.png")
-BackgroundTicTacToe = pygame.image.load(Path + "BackgroundTicTacToe.png")
-BackgroundBauernschach = pygame.image.load(Path + "BackgroundBauernschach.png")
-BackgroundDame = pygame.image.load(Path + "BackgroundDame.png")
+PygameIcon = pygame.image.load(Path2+"Icon.png")
+BackgroundMenu = pygame.image.load(Path2 + "BackgroundMenu.png")
+BackgroundLogin = pygame.image.load(Path2 + "BackgroundLogin.png")
+BackgroundSignIn = pygame.image.load(Path2 + "BackgroundSignIn.png")
+BackgroundLeaderboard = pygame.image.load(Path2 + "BackgroundLeaderboard.png")
+BackgroundPlay = pygame.image.load(Path2 + "BackgroundPlay.png")
+BackgroundTicTacToe = pygame.image.load(Path2 + "BackgroundTicTacToe.png")
+BackgroundBauernschach = pygame.image.load(Path2 + "BackgroundBauernschach.png")
+BackgroundDame = pygame.image.load(Path2 + "BackgroundDame.png")
 
 #BUTTON BACKGROUND
-ButtonBackgroundPlay = Path + "PlayButton.png"
-ButtonBackgroundBack = Path + "BackButton.png"
-ButtonBackgroundLogout = Path + "LogoutButton.png"
-ButtonBackgroundMenu = Path + "MenuButton.png"
+ButtonBackgroundPlay = Path2 + "PlayButton.png"
+ButtonBackgroundBack = Path2 + "BackButton.png"
+ButtonBackgroundLogout = Path2 + "LogoutButton.png"
+ButtonBackgroundMenu = Path2 + "MenuButton.png"
 
 #COLORS
 ButtonTextColorBlack = "#292929"
@@ -69,92 +75,54 @@ class Button():
 
 #NEBENFUNKTIONEN
 def PlayMusic(Start):
-    if Start:
-        PlayList = []
-        PlayList.append(Music)
-        pygame.mixer.music.load(PlayList[0])
-        pygame.mixer.music.set_volume(MusicVolume)
-        pygame.mixer.music.play()
-        pygame.mixer.music.rewind()
-    else:
-        pygame.mixer.music.stop()
-
-
+#     if Start:
+#         PlayList = []
+#         PlayList.append(Music)
+#         pygame.mixer.music.load(PlayList[0])
+#         pygame.mixer.music.set_volume(MusicVolume)
+#         pygame.mixer.music.play()
+#         pygame.mixer.music.rewind()
+#     else:
+#         pygame.mixer.music.stop()
+    print('TODO PlayMusic()')
+    
 def PlayClickSound():
-    ClickSound = pygame.mixer.Sound(ButtonClickPath)
-    ClickSound.set_volume(SoundVolume)
-    ClickSound.play()
+    # ClickSound = pygame.mixer.Sound(ButtonClickPath)
+    # ClickSound.set_volume(SoundVolume)
+    # ClickSound.play()
+    print('TODO PlayClickSound()')
 
 def GetFont(size): 
     return pygame.font.Font(FontPath, size)
 
-#REGISTER/LOGIN
-def IsUsernameUsed():
-    print('TODO IsUsernameUsed')
-    SqlQueryFindUsername = False
-    return SqlQueryFindUsername
-
-def GetUsername():
-    print('TODO GetUsername')
-    SqlQueryGetUsername = "Spielername"
-    return SqlQueryGetUsername
-
 #REGISTER
-def RegisterUser(Username, Password):
-    print('TODO RegisterUser')
-
 def TryRegister(Username, Password):
-    if not IsUsernameUsed:
-        RegisterUser(Username, Password)
-        TryLogin(Username, Password)
+    if userAccountCreation.validityCheck(Username, Password):
         return True
-    else:
-        return False
+    return False
 
 #LOGIN
-def LoginUser(Username, Password):
-    print('TODO LoginUser')
-    SqlQueryTryLogin = False
-    return SqlQueryTryLogin
-
 def TryLogin(Username, Password):
     global LoggedIn, LoggedInUsername
-    
-    if IsUsernameUsed:
-        LoggedInUsername = Username
+    if userAccountCheck.validityCheck(Username, Password):
         LoggedIn = True
+        LoggedInUsername = Username
         return True
-    else:
-        LoggedIn = False
-        return False
+    return False
 
 #LEADERBOARD
 def GetLeaderboard():
-    #TODO Leaderboard (username, punkte) kriegen
-    print('TODO GetLeaderboard')
-    
-def GetLeaderboardCount():
-    #TODO Anzahl LeaderboardSpieler für For Schleife
-    SqlQueryLeaderboardCount = 12
-    return SqlQueryLeaderboardCount
+    return getLeaderboard.getData() #Array[userid, username, punkte]
 
 def GetLeaderboardPoints():
     SqlQueryLeaderboardPoints = 12
     return SqlQueryLeaderboardPoints
 
 #SONSTIGES
-def HideWindow(Hide):
-    if Hide:
-        Window = pygame.display.set_mode((1280, 720), flags=pygame.HIDDEN)
-    else:
-        Window = pygame.display.set_mode((1280, 720), flags=pygame.SHOWN)
-
 def RunGame(Game, Difficulty):
     global LoggedInUsername
-    #HideWindow(True)
     temp = gameflow.Spielesammlung(Game, Difficulty, LoggedInUsername)
     temp.gameloop()
-    #HideWindow(False)
 
 def StartBauernschach(Difficulty):
     RunGame("Bauernschach", Difficulty)
@@ -163,7 +131,8 @@ def StartDame(Difficulty):
     RunGame("Dame", Difficulty)
     
 def StartTicTacToe(Difficulty):
-    RunGame("TicTacToe", Difficulty)
+    #RunGame("TicTacToe", Difficulty)
+    print('TODO StartTicTacToe()')
 
 #SEITEN
 def OpenLeaderboard():
@@ -171,6 +140,7 @@ def OpenLeaderboard():
     HasPrinted = False
     UsernameList = ['','','','','','','','','','','','']
     PointList = [0,0,0,0,0,0,0,0,0,0,0,0]
+    Counter = 0
     while True:
         #REFRESH
         pygame.display.update()  
@@ -208,24 +178,25 @@ def OpenLeaderboard():
             
         #LOGIK
         if not HasPrinted:
-            GetLeaderboard()
-            if GetLeaderboardCount() > 12:
-                LeaderboardCount = 12
-            else:
-                LeaderboardCount = GetLeaderboardCount()
-            for ControlVariable in range (LeaderboardCount):
-                UsernameList[ControlVariable] = GetUsername()
-                PointList[ControlVariable] = GetLeaderboardPoints()
-                print(str(UsernameList[ControlVariable]))
+            LeaderboardArray = GetLeaderboard()
+            Counter = 0
+            for ControlVariable in list(LeaderboardArray):
+                UsernameList[Counter] = ControlVariable[2]
+                PointList[Counter] = ControlVariable[1]
+                Counter += 1
             HasPrinted = True
+           
         else:
-            for ControlVariable in range (LeaderboardCount): 
-                Position = str(ControlVariable + 1)+". "
-                Height = 110 + ((ControlVariable + 1) * 40)
-                PlayerEntree = Position + str(UsernameList[ControlVariable]) + " - " + str(PointList[ControlVariable]) + " Pts."
+            LeaderboardArray = GetLeaderboard()
+            Counter = 0
+            for ControlVariable in LeaderboardArray: 
+                Height = 110 + ((Counter + 1) * 40)
+                Position = str(Counter + 1)+". "
+                PlayerEntree = Position + str(UsernameList[Counter]) + " - " + str(PointList[Counter]) + " Pts."
                 LeaderboardTitle = GetFont(20).render(PlayerEntree, True, "#514504")
                 LeaderboardRect = LeaderboardTitle.get_rect(center=(640, Height))
                 Window.blit(LeaderboardTitle, LeaderboardRect)
+                Counter += 1    
                 
         #EVENTS    
         for event in pygame.event.get():
@@ -332,7 +303,7 @@ def OpenSignIn():
                     ShowFailedLogin = False
 
                 elif RegisterButton.CheckForInput(MousePosition):
-                    PlayClickSound() #TODO
+                    PlayClickSound()
                     if len(UsernameInputText) < 6 or len(PasswordInputText) < 6:
                         ShowFailedLogin = True
                     elif TryRegister(UsernameInputText, PasswordInputText):
@@ -457,7 +428,7 @@ def OpenLogin():
                             text_input="LOGIN", font=GetFont(25), base_color=ButtonTextColorWhite, hovering_color=ButtonHoverColor)
         
         SIGN_IN_BUTTON = Button(image=pygame.image.load(ButtonBackgroundBack), pos=(640, 450), 
-                            text_input="SIGN IN", font=GetFont(25), base_color=ButtonTextColorWhite, hovering_color=ButtonHoverColor)
+                            text_input="REGISTER", font=GetFont(25), base_color=ButtonTextColorWhite, hovering_color=ButtonHoverColor)
         
         BackButton = Button(image=pygame.image.load(ButtonBackgroundBack), pos=(640, 550), 
                             text_input="- BACK -", font=GetFont(25), base_color=ButtonTextColorWhite, hovering_color=ButtonHoverColor)
@@ -509,9 +480,7 @@ def OpenLogin():
                         ShowFailedLogin = True
                     elif not TryLogin(UsernameInputText, PasswordInputText):
                         ShowFailedLogin = True
-                        LoggedIn = False
                     else:
-                        LoggedIn = True
                         OpenMenu()
 
                 elif SIGN_IN_BUTTON.CheckForInput(MousePosition):
