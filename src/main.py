@@ -1,7 +1,3 @@
-from windows.mainWindow import mainWindow
-from windows.versionWindow import versionWindow
+import gui.interface as guiInterface
 
-mW = mainWindow()
-vW = versionWindow(mW)
-
-mW.launch()
+guiInterface.GuiMain()
