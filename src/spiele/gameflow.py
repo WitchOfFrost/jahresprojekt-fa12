@@ -18,14 +18,14 @@ class gamestate(Enum):
     Player2Win = 4
     
 grid_size = 100
-spr_emptyGrid = pygame.transform.scale(pygame.image.load("assets/sprites/empty.png"), (grid_size, grid_size))
-spr_emptyMove = pygame.transform.scale(pygame.image.load("assets/sprites/emptyMove.png"), (grid_size, grid_size))
-spr_grid1 = pygame.transform.scale(pygame.image.load("assets/sprites/grid1.png"), (grid_size, grid_size))
-spr_grid1Capture = pygame.transform.scale(pygame.image.load("assets/sprites/grid1Capture.png"), (grid_size, grid_size))
-spr_grid1Selected = pygame.transform.scale(pygame.image.load("assets/sprites/grid1Selected.png"), (grid_size, grid_size))
-spr_grid2 = pygame.transform.scale(pygame.image.load("assets/sprites/grid2.png"), (grid_size, grid_size))
-spr_grid2Capture = pygame.transform.scale(pygame.image.load("assets/sprites/grid2Capture.png"), (grid_size, grid_size))
-spr_grid2Selected = pygame.transform.scale(pygame.image.load("assets/sprites/grid2Selected.png"), (grid_size, grid_size))
+spr_emptyGrid = pygame.transform.scale(pygame.image.load("src/assets/sprites/empty.png"), (grid_size, grid_size))
+spr_emptyMove = pygame.transform.scale(pygame.image.load("src/assets/sprites/emptyMove.png"), (grid_size, grid_size))
+spr_grid1 = pygame.transform.scale(pygame.image.load("src/assets/sprites/grid1.png"), (grid_size, grid_size))
+spr_grid1Capture = pygame.transform.scale(pygame.image.load("src/assets/sprites/grid1Capture.png"), (grid_size, grid_size))
+spr_grid1Selected = pygame.transform.scale(pygame.image.load("src/assets/sprites/grid1Selected.png"), (grid_size, grid_size))
+spr_grid2 = pygame.transform.scale(pygame.image.load("src/assets/sprites/grid2.png"), (grid_size, grid_size))
+spr_grid2Capture = pygame.transform.scale(pygame.image.load("src/assets/sprites/grid2Capture.png"), (grid_size, grid_size))
+spr_grid2Selected = pygame.transform.scale(pygame.image.load("src/assets/sprites/grid2Selected.png"), (grid_size, grid_size))
     
 class Spielesammlung:
     

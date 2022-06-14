@@ -1,5 +1,4 @@
 import gameflow
 
-temp = gameflow.Spielesammlung("Bauernschach", 1)
-
-print(temp.gameloop())
+temp = gameflow.Spielesammlung("Bauernschach", 1, "Testuser")
+temp.gameloop()
