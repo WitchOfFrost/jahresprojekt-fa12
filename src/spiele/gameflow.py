@@ -156,10 +156,10 @@ class Spielesammlung:
                                     currentGamestate = gamestate.Player2Win
                                 else:
                                     gameWon = self.performKIMove()
-                                    if gameWon == 0:
+                                    if gameWon == 0 or gameWon == 2:
                                         currentGamestate = gamestate.Player1Win
                                         insertLeaderboard(self.username, 1, self.difficulty)
-                                    elif gameWon == 1 or gameWon == 2:
+                                    elif gameWon == 1:
                                         currentGamestate = gamestate.Player2Win
                                     self.gameGrid.setAllRect(self.border, self.top_border, grid_size)
                                 
@@ -225,7 +225,7 @@ class Spielesammlung:
                                 self.currentSelectedCell = [-1, -1]
                                 self.allMovesOfPiece = []
                                 gameWon = self.gameGrid.moveCellByCoord(temp[0], temp[1], currCellCoord[0], currCellCoord[1])
-                                if gameWon == 0:
+                                if gameWon == 0 or gameWon == 2:
                                     currentGamestate = gamestate.Player1Win
                                     insertLeaderboard(self.username, 1, self.difficulty)
                                 elif gameWon == 1:
@@ -233,7 +233,7 @@ class Spielesammlung:
                                 else:
                                     self.gameGrid.setAllRect(self.border, self.top_border, grid_size)
                                     gameWon = self.performKIMove()
-                                    if gameWon == 0:
+                                    if gameWon == 0 or gameWon == 2:
                                         currentGamestate = gamestate.Player1Win
                                         insertLeaderboard(self.username, 1, self.difficulty)
                                     elif gameWon == 1:
