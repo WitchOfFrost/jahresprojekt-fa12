@@ -1,7 +1,5 @@
-from windows.mainWindow import mainWindow
-from windows.versionWindow import versionWindow
+import spiele.gameflow
 
-mW = mainWindow()
-vW = versionWindow(mW)
+temp = spiele.gameflow.Spielesammlung("Bauernschach", 1)
 
-mW.launch()
+print(temp.gameloop())
