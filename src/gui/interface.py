@@ -1,4 +1,5 @@
-import pygame, sys, re#, Gameflow
+import pygame, sys, re
+import spiele.gameflow as gameflow
 
 #SETUP
 Path = "src/assets/gui/"
@@ -67,14 +68,18 @@ class Button():
             self.text = self.font.render(self.text_input, True, self.base_color)
 
 #NEBENFUNKTIONEN
-def PlayMusic():
-    PlayList = []
-    PlayList.append(Music)
-    pygame.mixer.music.load(PlayList[0])
-    pygame.mixer.music.set_volume(MusicVolume)
-    pygame.mixer.music.play()
-    pygame.mixer.music.rewind()
-    
+def PlayMusic(Start):
+    if Start:
+        PlayList = []
+        PlayList.append(Music)
+        pygame.mixer.music.load(PlayList[0])
+        pygame.mixer.music.set_volume(MusicVolume)
+        pygame.mixer.music.play()
+        pygame.mixer.music.rewind()
+    else:
+        pygame.mixer.music.stop()
+
+
 def PlayClickSound():
     ClickSound = pygame.mixer.Sound(ButtonClickPath)
     ClickSound.set_volume(SoundVolume)
@@ -137,10 +142,6 @@ def GetLeaderboardPoints():
     SqlQueryLeaderboardPoints = 12
     return SqlQueryLeaderboardPoints
 
-def WriteToLeaderboard():
-    #TODO Leaderboard reinschreiben (username, punkte)
-    print('TODO WriteToLeaderboard')
-
 #SONSTIGES
 def HideWindow(Hide):
     if Hide:
@@ -149,15 +150,11 @@ def HideWindow(Hide):
         Window = pygame.display.set_mode((1280, 720), flags=pygame.SHOWN)
 
 def RunGame(Game, Difficulty):
-    global LoggedIn
     global LoggedInUsername
-    Wins = 0
-    #LeaderboardPoints = Difficulty
-    #GameFlow = Gameflow.Spielesammlung(Game, Difficulty)
-    #Wins = GameFlow.gameloop():
-    #if LoggedIn:
-        #WriteToLeaderboard(LoggedInUsername, LeaderboardPoints * Wins)
-    HideWindow(False)
+    #HideWindow(True)
+    temp = gameflow.Spielesammlung(Game, Difficulty, LoggedInUsername)
+    temp.gameloop()
+    #HideWindow(False)
 
 def StartBauernschach(Difficulty):
     RunGame("Bauernschach", Difficulty)
