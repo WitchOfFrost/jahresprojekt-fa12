@@ -833,5 +833,5 @@ def GuiMain():
     pygame.init()
     pygame.display.set_caption("SPIESA.exe")
     pygame.display.set_icon(PygameIcon)
-    PlayMusic()
+    PlayMusic(True)
     OpenMenu()
