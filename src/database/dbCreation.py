@@ -1,12 +1,10 @@
 import sqlite3
 
-
 def createDB(debug):
-
 	if(debug == True):
 		path = input("Input Database Path")
 	else:
-		path = 'data/db.sqlite'
+		path = 'src/data/db.sqlite'
 
 	conn = sqlite3.connect(path)
 

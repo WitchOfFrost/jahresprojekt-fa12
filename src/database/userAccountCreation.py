@@ -6,7 +6,7 @@ import re
 
 from getpass import getpass
 
-conn = sqlite3.connect('data/db.sqlite')
+conn = sqlite3.connect('src/data/db.sqlite')
 
 cur = ''
 cur = conn.cursor()

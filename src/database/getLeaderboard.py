@@ -1,6 +1,6 @@
 import sqlite3
 
-conn = sqlite3.connect('data/db.sqlite')
+conn = sqlite3.connect('src/data/db.sqlite')
 
 
 def getLBData():
