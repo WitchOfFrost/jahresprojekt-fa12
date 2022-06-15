@@ -7,32 +7,31 @@ import database.getLeaderboard as getLeaderboard
 
 
 #SETUP
-Path = "assets/gui/"
-Path2 = "src/assets/gui/"
+Path = "src/assets/gui/"
 MusicVolume = 0.5
 SoundVolume = 0.8
 LoggedInUsername = ''
 LoggedIn = False
 
 #ASSETS
-FontPath = Path2 +"font.ttf"
+FontPath = Path +"font.ttf"
 Music = Path + "BackgroundMusic.mp3"
 ButtonClickPath = Path + "ButtonClick.mp3"
-PygameIcon = pygame.image.load(Path2+"Icon.png")
-BackgroundMenu = pygame.image.load(Path2 + "BackgroundMenu.png")
-BackgroundLogin = pygame.image.load(Path2 + "BackgroundLogin.png")
-BackgroundSignIn = pygame.image.load(Path2 + "BackgroundSignIn.png")
-BackgroundLeaderboard = pygame.image.load(Path2 + "BackgroundLeaderboard.png")
-BackgroundPlay = pygame.image.load(Path2 + "BackgroundPlay.png")
-BackgroundTicTacToe = pygame.image.load(Path2 + "BackgroundTicTacToe.png")
-BackgroundBauernschach = pygame.image.load(Path2 + "BackgroundBauernschach.png")
-BackgroundDame = pygame.image.load(Path2 + "BackgroundDame.png")
+PygameIcon = pygame.image.load(Path+"Icon.png")
+BackgroundMenu = pygame.image.load(Path + "BackgroundMenu.png")
+BackgroundLogin = pygame.image.load(Path + "BackgroundLogin.png")
+BackgroundSignIn = pygame.image.load(Path + "BackgroundSignIn.png")
+BackgroundLeaderboard = pygame.image.load(Path + "BackgroundLeaderboard.png")
+BackgroundPlay = pygame.image.load(Path + "BackgroundPlay.png")
+BackgroundTicTacToe = pygame.image.load(Path + "BackgroundTicTacToe.png")
+BackgroundBauernschach = pygame.image.load(Path + "BackgroundBauernschach.png")
+BackgroundDame = pygame.image.load(Path + "BackgroundDame.png")
 
 #BUTTON BACKGROUND
-ButtonBackgroundPlay = Path2 + "PlayButton.png"
-ButtonBackgroundBack = Path2 + "BackButton.png"
-ButtonBackgroundLogout = Path2 + "LogoutButton.png"
-ButtonBackgroundMenu = Path2 + "MenuButton.png"
+ButtonBackgroundPlay = Path + "PlayButton.png"
+ButtonBackgroundBack = Path + "BackButton.png"
+ButtonBackgroundLogout = Path + "LogoutButton.png"
+ButtonBackgroundMenu = Path + "MenuButton.png"
 
 #COLORS
 ButtonTextColorBlack = "#292929"
@@ -75,22 +74,20 @@ class Button():
 
 #NEBENFUNKTIONEN
 def PlayMusic(Start):
-#     if Start:
-#         PlayList = []
-#         PlayList.append(Music)
-#         pygame.mixer.music.load(PlayList[0])
-#         pygame.mixer.music.set_volume(MusicVolume)
-#         pygame.mixer.music.play()
-#         pygame.mixer.music.rewind()
-#     else:
-#         pygame.mixer.music.stop()
-    print('TODO PlayMusic()')
-    
+     if Start:
+         PlayList = []
+         PlayList.append(Music)
+         pygame.mixer.music.load(PlayList[0])
+         pygame.mixer.music.set_volume(MusicVolume)
+         pygame.mixer.music.play()
+         pygame.mixer.music.rewind()
+     else:
+         pygame.mixer.music.stop()
+
 def PlayClickSound():
-    # ClickSound = pygame.mixer.Sound(ButtonClickPath)
-    # ClickSound.set_volume(SoundVolume)
-    # ClickSound.play()
-    print('TODO PlayClickSound()')
+    ClickSound = pygame.mixer.Sound(ButtonClickPath)
+    ClickSound.set_volume(SoundVolume)
+    ClickSound.play()
 
 def GetFont(size): 
     return pygame.font.Font(FontPath, size)
